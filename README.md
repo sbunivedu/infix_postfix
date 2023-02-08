@@ -47,3 +47,25 @@ Here are two equivalent ways to construct a list:
 (cons 'a (cons 'b (cons 'c '()))) => '(a b c)
 (list 'a 'b 'c) => '(a b c)
 ```
+
+<details>
+<summary>Solution</summary>
+
+```scheme
+(define infix->prefix
+  (lambda (expr)
+    (cond
+      ((null? expr)
+       (error "Cannot process an empty expression"))
+      ((number? expr) expr)
+      (else
+       (list (cadr expr)                        ; operator
+             (infix->prefix (car expr))         ; left
+             (infix->prefix (caddr expr)))))))  ; right
+(infix->prefix 42)
+(infix->prefix '(1 + 2))
+(infix->prefix '(1 + (2 * 8)))
+(infix->prefix '((((2 + 3) * 2) / 5) + (17 - 1)))
+(infix->prefix '())
+```
+</details>
